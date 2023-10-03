@@ -6,6 +6,7 @@ import { PlanetsModule } from '../planets/planets.module';
 import { CacheInterceptor, CacheModule } from '@nestjs/cache-manager';
 import { APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
+import { PeopleModule } from '../people/people.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ConfigModule } from '@nestjs/config';
     }),
     ConfigModule.forRoot({ envFilePath: '.env', isGlobal: true }),
     PlanetsModule,
+    PeopleModule,
   ],
   controllers: [AppController],
   providers: [
