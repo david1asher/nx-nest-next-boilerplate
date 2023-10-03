@@ -1,4 +1,5 @@
 import './global.css';
+import Script from 'next/script';
 
 export const metadata = {
   title: 'Welcome to next',
@@ -12,7 +13,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <head>
+        <Script src="https://cdn.tailwindcss.com"></Script>
+      </head>
+      <body>
+        <div className="container mx-auto px-4">{children}</div>
+      </body>
     </html>
   );
 }
