@@ -1,18 +1,18 @@
 import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { Injectable, UseInterceptors } from '@nestjs/common';
 import axios from 'axios';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class PlanetsService {
-  private readonly SWAPI_URL = 'https://swapi.dev/api/planets';
+  constructor(private configService: ConfigService) {}
 
   @CacheTTL(1000 * 60 * 5) // 5 minutes cache
   @UseInterceptors(CacheInterceptor)
   async getPlanets(page: number): Promise<any> {
-
-    const response = await axios.get(
-      `${this.SWAPI_URL}/?page=${page}&format=json`
-    );
+    const base = this.configService.get<string>('SWAPI_BASE_URL');
+    const url = `${base}/planets/?page=${page}&format=json`;
+    const response = await axios.get(url);
     return response.data;
   }
 }

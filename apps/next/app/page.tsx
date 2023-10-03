@@ -11,10 +11,7 @@ export default async function Index() {
       <div className="wrapper">
         <div className="container">
           <div id="welcome">
-            <h1>
-              <span> Hello there, </span>
-              Welcome next 👋
-            </h1>
+            <h1>Welcome Guys 👋</h1>
           </div>
 
           <div id="hero" className="rounded">
