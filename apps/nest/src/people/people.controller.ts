@@ -6,7 +6,7 @@ export class PeopleController {
   constructor(private readonly peopleService: PeopleService) {}
 
   @Get()
-  getPeople(@Query('page') page = 1) {
-    return this.peopleService.getPeople(page);
+  getPeople(@Query('page') page = 1, @Query('search') search?: string) {
+    return this.peopleService.getPeople(page, search);
   }
 }

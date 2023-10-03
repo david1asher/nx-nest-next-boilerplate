@@ -1,5 +1,5 @@
 import { SWAPIPeopleResponse } from '@nx-nest-next-boilerplate/types';
-import { Injectable, UseInterceptors } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
 
@@ -7,10 +7,14 @@ import { ConfigService } from '@nestjs/config';
 export class PeopleService {
   constructor(private configService: ConfigService) {}
 
-  async getPeople(page: number): Promise<any> {
+  async getPeople(page: number, search?: string): Promise<SWAPIPeopleResponse> {
+
     try {
       const base = this.configService.get<string>('SWAPI_BASE_URL');
-      const url = `${base}/people/?page=${page}&format=json`;
+      let url = `${base}/people/?page=${page}&format=json`;
+      if (search) {
+        url += `&search=${encodeURIComponent(search)}`;
+      }
       const response = await axios.get(url);
       return response.data as SWAPIPeopleResponse;
     } catch (error) {

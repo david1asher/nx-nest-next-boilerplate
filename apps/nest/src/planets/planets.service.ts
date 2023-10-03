@@ -10,9 +10,15 @@ export class PlanetsService {
 
   @CacheTTL(1000 * 60 * 5) // 5 minutes cache
   @UseInterceptors(CacheInterceptor)
-  async getPlanets(page: number): Promise<any> {
+  async getPlanets(
+    page: number,
+    search?: string
+  ): Promise<SWAPIPlanetsResponse> {
     const base = this.configService.get<string>('SWAPI_BASE_URL');
-    const url = `${base}/planets/?page=${page}&format=json`;
+    let url = `${base}/planets/?page=${page}&format=json`;
+    if (search) {
+      url += `&search=${encodeURIComponent(search)}`;
+    }
     const response = await axios.get(url);
     return response.data as SWAPIPlanetsResponse;
   }
