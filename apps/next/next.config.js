@@ -10,9 +10,12 @@ const rewrites = async () => {
       destination: 'http://localhost:3000/api/resorces/',
     },
     {
-      // test
       source: '/api/greeting',
       destination: 'http://localhost:3000/api/greeting',
+    },
+    {
+      source: '/api/:path*',
+      destination: 'http://localhost:3000/api/:path*',
     },
   ];
 };
