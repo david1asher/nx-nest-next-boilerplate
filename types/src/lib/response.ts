@@ -5,6 +5,7 @@ export interface SWAPIResponse {
   count: number;
   next: URL | null;
   previous: URL | null;
+  results: any[] | null;
 }
 
 export interface SWAPIPlanetsResponse extends SWAPIResponse {
