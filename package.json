@@ -5,10 +5,12 @@
   "scripts": {},
   "private": true,
   "dependencies": {
+    "@nestjs/cache-manager": "^2.1.0",
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.0.2",
     "axios": "^1.0.0",
+    "cache-manager": "^5.2.3",
     "next": "13.4.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
