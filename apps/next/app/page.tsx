@@ -94,6 +94,7 @@ export default async function Index() {
                   <span>
                     - BONUS: autocomplete: Nope, you cant have it all :)
                   </span>
+                  <span>- BONUS: Typescript can be a big bonus: Done </span>
                 </span>
               </div>
             </div>
@@ -120,8 +121,6 @@ export default async function Index() {
               </a>
             </div>
           </div>
-
-
 
           <p id="love">
             Carefully crafted with
