@@ -1,4 +1,5 @@
 /* eslint-disable @next/next/no-sync-scripts */
+import Navbar from '../components/navbar';
 import './global.css';
 
 export const metadata = {
@@ -16,7 +17,12 @@ export default function RootLayout({
       <head>
         <script src="https://cdn.tailwindcss.com"></script>
       </head>
-      <body>{children}</body>
+      <body>
+        <header>
+          <Navbar />
+        </header>
+        <main>{children}</main>
+      </body>
     </html>
   );
 }
