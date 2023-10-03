@@ -2,6 +2,7 @@ import { CacheInterceptor, CacheTTL } from '@nestjs/cache-manager';
 import { Injectable, UseInterceptors } from '@nestjs/common';
 import axios from 'axios';
 import { ConfigService } from '@nestjs/config';
+import { SWAPIPlanetsResponse } from '@nx-nest-next-boilerplate/types';
 
 @Injectable()
 export class PlanetsService {
@@ -13,6 +14,6 @@ export class PlanetsService {
     const base = this.configService.get<string>('SWAPI_BASE_URL');
     const url = `${base}/planets/?page=${page}&format=json`;
     const response = await axios.get(url);
-    return response.data;
+    return response.data as SWAPIPlanetsResponse;
   }
 }
