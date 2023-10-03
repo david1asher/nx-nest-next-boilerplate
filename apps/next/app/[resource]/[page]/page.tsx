@@ -1,34 +1,34 @@
-import Link from 'next/link';
+'use client';
 import React from 'react';
+import Link from 'next/link';
+import { SWAPIResponse } from '@nx-nest-next-boilerplate/types';
+import { useRequest } from '../../../hooks/useRequest';
+import { useDebounceState } from '../../../hooks/useDebounceState';
 
-async function getData(resource: string, page = 1) {
-  const res = await fetch(
-    `${process.env.BASE_URL}/api/${resource}?page=${page}`
-  );
-  if (!res.ok) {
-    console.log(res);
-    return 'Failed to fetch data';
-  }
-  return res.json();
-}
-
-export interface TableProps {
+interface TableProps {
   params: {
     page?: number;
     resource: string;
   };
 }
 
-export const Table: React.FC<TableProps> = async (props: TableProps) => {
+export const Table: React.FC<TableProps> = (props: TableProps) => {
   const page = Number(props.params.page || 1);
-  const data = await getData(props.params.resource, page);
 
-  if (!data.results || data.results.length === 0) {
-    return <div className="text-red-500">Failed to fetch data</div>;
-  }
+  const [debouncedSearch, setSearch, unDebouncedSearch] =
+    useDebounceState<string>('', 300);
 
-  const columns = Object.keys(data.results[0]);
-  const totalPages = Math.ceil(data.count / 10); // Assuming 10 items per page
+  const url = `${process.env.BASE_URL}/api/${
+    props.params.resource
+  }?page=${page}&search=${encodeURIComponent(debouncedSearch)}`;
+
+  const [data, isLoading, error] = useRequest<SWAPIResponse>(url, 'GET', null, [
+    page,
+    debouncedSearch,
+  ]);
+
+  const columns = data && data.results ? Object.keys(data.results[0]) : [];
+  const totalPages = data ? Math.ceil(data.count / 10) : 0;
 
   return (
     <div className="container mx-auto mt-8 p-4 max-w-full overflow-none">
@@ -40,6 +40,13 @@ export const Table: React.FC<TableProps> = async (props: TableProps) => {
             </button>
           </Link>
         )}
+        <input
+          type="text"
+          value={unDebouncedSearch}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search By Name"
+          className="p-2 border rounded-lg"
+        />
         {page < totalPages && (
           <Link href={`/${props.params.resource}/${page + 1}`} replace>
             <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
@@ -49,37 +56,44 @@ export const Table: React.FC<TableProps> = async (props: TableProps) => {
         )}
       </div>
       <div className="overflow-auto">
-        <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
-          <thead>
-            <tr>
-              {columns.map((column: string) => (
-                <th
-                  key={column}
-                  className="px-6 py-3 bg-blue-500 text-white text-left text-xs font-semibold uppercase"
-                >
-                  {column}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {data.results.map((item: any, index: number) => (
-              <tr
-                key={item.name}
-                className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}
-              >
+        {isLoading ? (
+          <div>Loading...</div>
+        ) : error ? (
+          <div className="text-red-500">{error.message}</div>
+        ) : (
+          <table className="min-w-full bg-white shadow-lg rounded-lg overflow-hidden">
+            <thead>
+              <tr>
                 {columns.map((column: string) => (
-                  <td
+                  <th
                     key={column}
-                    className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 max-w-xs overflow-auto"
+                    className="px-6 py-3 bg-blue-500 text-white text-left text-xs font-semibold uppercase"
                   >
-                    {item[column]}
-                  </td>
+                    {column}
+                  </th>
                 ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data &&
+                (data.results || []).map((item: any, index: number) => (
+                  <tr
+                    key={item.name}
+                    className={index % 2 === 0 ? 'bg-gray-100' : 'bg-white'}
+                  >
+                    {columns.map((column: string) => (
+                      <td
+                        key={column}
+                        className="px-6 py-4 whitespace-nowrap text-sm text-gray-600 max-w-xs overflow-auto"
+                      >
+                        {item[column]}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        )}
       </div>
     </div>
   );
