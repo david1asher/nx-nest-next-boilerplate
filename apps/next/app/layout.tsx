@@ -1,5 +1,5 @@
+/* eslint-disable @next/next/no-sync-scripts */
 import './global.css';
-import Script from 'next/script';
 
 export const metadata = {
   title: 'Welcome to next',
@@ -14,11 +14,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <Script src="https://cdn.tailwindcss.com"></Script>
+        <script src="https://cdn.tailwindcss.com"></script>
       </head>
-      <body>
-        <div className="container mx-auto px-4">{children}</div>
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
