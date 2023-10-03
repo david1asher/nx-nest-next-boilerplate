@@ -6,15 +6,9 @@ import axios from 'axios';
 export class PlanetsService {
   private readonly SWAPI_URL = 'https://swapi.dev/api/planets';
 
-  @CacheTTL(600000000)
+  @CacheTTL(1000 * 60 * 5) // 5 minutes cache
   @UseInterceptors(CacheInterceptor)
   async getPlanets(page: number): Promise<any> {
-
-
-    console.log("printer", "___________________________________________")
-    console.log("printer", "imhere",  `~/nx-nest-next-boilerplate/apps/nest/src/planets/planets.service.ts:18`)
-    console.log('printer', `${this.SWAPI_URL}/?page=${page}&format=json`);
-    console.log("printer", "___________________________________________")
 
     const response = await axios.get(
       `${this.SWAPI_URL}/?page=${page}&format=json`
