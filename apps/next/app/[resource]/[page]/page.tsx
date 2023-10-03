@@ -35,7 +35,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
       <div className="flex justify-between mb-4">
         {page > 1 && (
           <Link href={`/${props.params.resource}/${page - 1}`} replace>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
               Previous
             </button>
           </Link>
@@ -49,7 +49,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
         />
         {page < totalPages && (
           <Link href={`/${props.params.resource}/${page + 1}`} replace>
-            <button className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
+            <button className="bg-gray-800 hover:bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md">
               Next
             </button>
           </Link>
@@ -67,7 +67,7 @@ export const Table: React.FC<TableProps> = (props: TableProps) => {
                 {columns.map((column: string) => (
                   <th
                     key={column}
-                    className="px-6 py-3 bg-blue-500 text-white text-left text-xs font-semibold uppercase"
+                    className="px-6 py-3 bg-gray-800 text-white text-left text-xs font-semibold uppercase"
                   >
                     {column}
                   </th>
